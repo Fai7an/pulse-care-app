@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulsecare.ai — Intelligent Healthcare Ecosystem</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen antialiased selection:bg-blue-500 selection:text-white">
+
+  <!-- BACKGROUND GLOW EFFECTS -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/2 -right-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="relative z-10 flex flex-col min-h-screen">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center space-x-3">
+          <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 text-white p-2.5 rounded-xl shadow-lg shadow-blue-500/20">
+            <i data-lucide="activity" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <span class="text-xl font-extrabold tracking-tight text-white">PulseCare<span class="text-blue-500">.ai</span></span>
+            <span class="block text-[10px] text-slate-400 font-medium tracking-wide uppercase">Unified Health Intelligence</span>
+          </div>
+        </div>
+
+        <!-- Trust Badges (Desktop) -->
+        <div class="hidden lg:flex items-center space-x-3 text-xs">
+          <span class="flex items-center gap-1.5 bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20 font-medium">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> HIPAA Compliant
+          </span>
+          <span class="flex items-center gap-1.5 bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700 font-medium">
+            <i data-lucide="lock" class="w-3.5 h-3.5 text-blue-400"></i> 256-Bit Encrypted
+          </span>
+          <span class="flex items-center gap-1.5 bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full border border-blue-500/20 font-medium">
+            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Doctor Approved
+          </span>
+        </div>
+
+        <!-- Right Controls -->
+        <div class="flex items-center space-x-3">
+          <!-- Red Flag Emergency Trigger -->
+          <button onclick="triggerEmergency()" class="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-xs md:text-sm font-semibold px-3.5 py-2 rounded-xl flex items-center gap-2 shadow-lg shadow-red-600/30 transition-all transform active:scale-95 animate-pulse">
+            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Emergency</span> Red Flag
+          </button>
+
+          <!-- Dual Pathway Switcher -->
+          <div class="bg-slate-900 p-1 rounded-xl border border-slate-800 flex items-center shadow-inner">
+            <button id="btnPatient" onclick="switchRole('patient')" class="px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-blue-600 text-white shadow-md">
+              Patients
+            </button>
+            <button id="btnDoctor" onclick="switchRole('doctor')" class="px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition-all text-slate-400 hover:text-white">
+              Doctors
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 space-y-8">
+
+      <!-- ================= PATIENT VIEW ================= -->
+      <div id="patientView" class="space-y-8 transition-all duration-300">
+
+        <!-- Banner: AI Disclaimer -->
+        <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-center gap-3.5 text-amber-200/90 text-xs md:text-sm shadow-sm backdrop-blur-sm">
+          <div class="bg-amber-500/20 p-2 rounded-xl text-amber-400 shrink-0">
+            <i data-lucide="info" class="w-5 h-5"></i>
+          </div>
+          <span><strong>AI Safety Note:</strong> Guidance generated by pulsecare serves as informative triage support and should be verified with a licensed physician.</span>
+        </div>
+
+        <!-- HERO CORE FEATURES (3 COLUMNS) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <!-- Feature 1: AI Triage Chatbot -->
+          <div class="bg-slate-950/60 border border-slate-800/80 rounded-3xl p-6 hover:border-blue-500/50 transition-all group flex flex-col justify-between hover:shadow-xl hover:shadow-blue-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="bg-blue-500/10 text-blue-400 text-xs font-bold px-3 py-1 rounded-full border border-blue-500/20">AI Assistant</span>
+                <div class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                  <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">AI Symptom Checker & Triage</h3>
+              <p class="text-slate-400 text-xs leading-relaxed mb-6">Describe symptoms to receive instant severity scoring, clinical notes preparation, and care suggestions.</p>
+            </div>
+            <button onclick="openModal('triage')" class="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-3 rounded-2xl transition shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2">
+              Launch AI Assistant <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Feature 2: Telehealth Consultations -->
+          <div class="bg-slate-950/60 border border-slate-800/80 rounded-3xl p-6 hover:border-emerald-500/50 transition-all group flex flex-col justify-between hover:shadow-xl hover:shadow-emerald-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20">Telehealth</span>
+                <div class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                  <i data-lucide="video" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">Virtual Specialty Consults</h3>
+              <p class="text-slate-400 text-xs leading-relaxed mb-4">Instant video, audio, or chat with verified specialists across dermatology, pediatrics, and more.</p>
+              
+              <div class="grid grid-cols-2 gap-2 mb-6 text-[11px]">
+                <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl text-slate-300 font-medium text-center">Acne & Skin</div>
+                <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl text-slate-300 font-medium text-center">Pediatrics</div>
+                <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl text-slate-300 font-medium text-center">Gynecology</div>
+                <div class="bg-slate-900/80 border border-slate-800 p-2 rounded-xl text-slate-300 font-medium text-center">Cold & Fever</div>
+              </div>
+            </div>
+            <button onclick="openModal('consult')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-3 rounded-2xl transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
+              Book Consultation <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Feature 3: Report & Substance Analyzer -->
+          <div class="bg-slate-950/60 border border-slate-800/80 rounded-3xl p-6 hover:border-purple-500/50 transition-all group flex flex-col justify-between hover:shadow-xl hover:shadow-purple-500/10">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="bg-purple-500/10 text-purple-400 text-xs font-bold px-3 py-1 rounded-full border border-purple-500/20">AI Diagnostics</span>
+                <div class="w-10 h-10 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                  <i data-lucide="file-search" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <h3 class="text-lg font-bold text-white mb-2">Report & Poison Analyzer</h3>
+              <p class="text-slate-400 text-xs leading-relaxed mb-6">Scan lab test reports or analyze home ingredients for toxins, allergens, and hazards.</p>
+            </div>
+            <button onclick="openModal('analyzer')" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3 rounded-2xl transition shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2">
+              Scan Document / Ingredient <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- LOWER DASHBOARD: FAMILY PROFILES & SMART CARE TIMELINE -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Family Profiles Card -->
+          <div class="bg-slate-950/60 border border-slate-800/80 rounded-3xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-white flex items-center gap-2 text-base">
+                <i data-lucide="users" class="text-blue-400 w-5 h-5"></i> Family Health Profiles
+              </h3>
+              <button class="text-xs text-blue-400 hover:text-blue-300 font-semibold transition">+ Add Dependent</button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 pt-2">
+              <div class="bg-blue-600/10 border border-blue-500/30 p-3.5 rounded-2xl text-center">
+                <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold text-xs mx-auto mb-2 shadow-md">Self</div>
+                <p class="text-xs font-bold text-white">Alex Morgan</p>
+                <span class="text-[10px] text-blue-400 font-medium">Primary</span>
+              </div>
+              <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center hover:border-slate-700 transition">
+                <div class="w-10 h-10 bg-slate-800 text-slate-300 rounded-xl flex items-center justify-center font-bold text-xs mx-auto mb-2">Mom</div>
+                <p class="text-xs font-bold text-slate-300">Sarah Morgan</p>
+                <span class="text-[10px] text-slate-500">BP Tracked</span>
+              </div>
+              <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center hover:border-slate-700 transition">
+                <div class="w-10 h-10 bg-slate-800 text-slate-300 rounded-xl flex items-center justify-center font-bold text-xs mx-auto mb-2">Kid</div>
+                <p class="text-xs font-bold text-slate-300">Leo Morgan</p>
+                <span class="text-[10px] text-emerald-400">Vaccine Due</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connected Care Episode Mapping -->
+          <div class="bg-slate-950/60 border border-slate-800/80 rounded-3xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-bold text-white flex items-center gap-2 text-base">
+                <i data-lucide="git-commit" class="text-indigo-400 w-5 h-5"></i> Connected Care Episode
+              </h3>
+              <span class="text-[10px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-0.5 rounded-full font-semibold">Active Care Loop</span>
+            </div>
+
+            <div class="relative pl-6 border-l-2 border-slate-800 space-y-4 pt-1 text-xs">
+              <div class="relative">
+                <span class="w-3 h-3 bg-blue-500 rounded-full absolute -left-[31px] top-0.5 border-2 border-slate-950"></span>
+                <p class="font-bold text-white">1. Teleconsultation Completed</p>
+                <p class="text-slate-400">Dr. Sarah Vance • Dermatology</p>
+              </div>
+              <div class="relative">
+                <span class="w-3 h-3 bg-indigo-500 rounded-full absolute -left-[31px] top-0.5 border-2 border-slate-950"></span>
+                <p class="font-bold text-white">2. Lab Test & Sample Collection</p>
+                <p class="text-slate-400">Complete Blood Count • Diagnostic Center</p>
+              </div>
+              <div class="relative">
+                <span class="w-3 h-3 bg-amber-500 rounded-full absolute -left-[31px] top-0.5 border-2 border-slate-950"></span>
+                <p class="font-bold text-amber-400">3. AI Medication Conflict Alert</p>
+                <p class="text-slate-400">Prescription flagged mild interaction with existing allergy med.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= DOCTOR / CLINIC VIEW ================= -->
+      <div id="doctorView" class="hidden space-y-6 transition-all duration-300">
+        
+        <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 shadow-2xl">
+          <div class="flex flex-wrap items-center justify-between gap-4 mb-8 border-b border-slate-800 pb-6">
+            <div>
+              <span class="text-xs text-blue-400 font-bold tracking-wider uppercase">Practitioner Portal</span>
+              <h2 class="text-2xl font-black text-white">Doctor Clinical Suite</h2>
+            </div>
+            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3.5 py-1.5 rounded-full font-semibold flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i> Verified Practitioner ID #88492
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Voice to Notes Scriber -->
+            <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-white flex items-center gap-2">
+                  <i data-lucide="mic" class="text-blue-400 w-5 h-5"></i> Voice-to-Notes (Clinical Scriber)
+                </h4>
+                <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded">AI Active</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">Record live doctor-patient consultations to automatically generate structured medical notes (SOAP format).</p>
+              <button onclick="alert('Recording started... Speak clearly into microphone.')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                <i data-lucide="play" class="w-3.5 h-3.5"></i> Start Recording Session
+              </button>
+            </div>
+
+            <!-- Automated Patient Follow-ups -->
+            <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-white flex items-center gap-2">
+                  <i data-lucide="message-square-text" class="text-emerald-400 w-5 h-5"></i> Automated Patient Check-ins
+                </h4>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded">Automated</span>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">Triggers automated 3-day post-consultation follow-ups via WhatsApp/SMS to check recovery status.</p>
+              <button onclick="alert('Follow-up schedule updated!')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                <i data-lucide="settings" class="w-3.5 h-3.5"></i> Configure Schedule
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- INTERACTIVE MODAL CONTAINER -->
+  <div id="modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- LOGIC SCRIPT -->
+  <script>
+    // Render Icons
+    lucide.createIcons();
+
+    // Toggle Role Function
+    function switchRole(role) {
+      const patientView = document.getElementById('patientView');
+      const doctorView = document.getElementById('doctorView');
+      const btnPatient = document.getElementById('btnPatient');
+      const btnDoctor = document.getElementById('btnDoctor');
+
+      if (role === 'patient') {
+        patientView.classList.remove('hidden');
+        doctorView.classList.add('hidden');
+        btnPatient.className = "px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-blue-600 text-white shadow-md";
+        btnDoctor.className = "px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition-all text-slate-400 hover:text-white";
+      } else {
+        patientView.classList.add('hidden');
+        doctorView.classList.remove('hidden');
+        btnDoctor.className = "px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-blue-600 text-white shadow-md";
+        btnPatient.className = "px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition-all text-slate-400 hover:text-white";
+      }
+    }
+
+    // Emergency Red Flag System Trigger
+    function triggerEmergency() {
+      const modal = document.getElementById('modal');
+      const content = document.getElementById('modalContent');
+
+      content.innerHTML = `
+        <div class="text-center space-y-4">
+          <div class="w-14 h-14 bg-red-500/20 text-red-500 border border-red-500/30 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-red-500/20">
+            <i data-lucide="alert-octagon" class="w-7 h-7"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white">Emergency Red Flag Protocol</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">If you are experiencing severe chest pain, extreme dyspnea, or severe allergic reaction, contact localized emergency response directly.</p>
+          <div class="pt-2 space-y-2">
+            <a href="tel:112" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-red-600/30 transition">
+              <i data-lucide="phone-call" class="w-4 h-4"></i> Dial Emergency Services (112 / 911)
+            </a>
+            <button onclick="closeModal()" class="w-full bg-slate-800 text-slate-300 font-semibold py-2.5 rounded-2xl text-xs hover:bg-slate-700 transition">Dismiss</button>
+          </div>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    // Modal Manager
+    function openModal(type) {
+      const modal = document.getElementById('modal');
+      const content = document.getElementById('modalContent');
+
+      if (type === 'triage') {
+        content.innerHTML = `
+          <h3 class="font-bold text-lg text-white mb-1">AI Triage Assistant</h3>
+          <p class="text-xs text-slate-400 mb-4">Enter your symptoms to receive automated triage advice.</p>
+          <textarea class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs text-slate-200 focus:border-blue-500 outline-none mb-4" rows="3" placeholder="e.g. Severe headache, mild fever since morning..."></textarea>
+          <button onclick="alert('Analysis complete! Consultation recommended within 24 hours.')" class="w-full bg-blue-600 text-white font-bold py-3 rounded-2xl text-xs transition">Analyze Symptoms</button>
+        `;
+      } else if (type === 'consult') {
+        content.innerHTML = `
+          <h3 class="font-bold text-lg text-white mb-1">Book Virtual Specialist</h3>
+          <p class="text-xs text-slate-400 mb-4">Choose a domain for instant video consultation.</p>
+          <select class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs text-slate-200 mb-4 outline-none">
+            <option>Dermatology (Acne / Skin issues)</option>
+            <option>Pediatrics (Child Health)</option>
+            <option>Gynecology (Period / Pregnancy)</option>
+            <option>General Physician (Cold / Fever)</option>
+          </select>
+          <button onclick="alert('Connecting to next available doctor...')" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-2xl text-xs transition">Start Video Consultation</button>
+        `;
+      } else if (type === 'analyzer') {
+        content.innerHTML = `
+          <h3 class="font-bold text-lg text-white mb-1">Document & Poison Analyzer</h3>
+          <p class="text-xs text-slate-400 mb-4">Upload a lab report PDF or photograph ingredients for toxicity checks.</p>
+          <input type="file" class="w-full bg-slate-950 border border-slate-800 text-xs text-slate-400 p-2.5 rounded-2xl mb-4">
+          <button onclick="alert('Scanning complete! No hazardous toxicity detected.')" class="w-full bg-purple-600 text-white font-bold py-3 rounded-2xl text-xs transition">Process Document</button>
+        `;
+      }
+
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
